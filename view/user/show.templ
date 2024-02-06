@@ -1,0 +1,16 @@
+package user
+
+import "github.com/bilkadev/Go_HTMX_Real-chat/model"
+
+func getUser(c context.Context) string {
+	user, ok := c.Value("user").(string)
+	if !ok {
+		return ""
+	}
+	return user
+}
+
+templ Show(u model.User) {
+	<h1 class="">{ getUser(ctx) }</h1>
+	<h1>Hello { u.Email } from the user page </h1>
+}
