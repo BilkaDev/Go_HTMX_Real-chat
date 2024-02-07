@@ -17,7 +17,7 @@ func NewApiServer() *ApiServer {
 
 func (*ApiServer) Run() {
 	server := echo.New()
-	_ = LoadEnv()
+	config := LoadEnv()
 
 	server.Static("/assets", "assets")
 
@@ -25,7 +25,7 @@ func (*ApiServer) Run() {
 
 	SetupRoutes(server)
 
-	server.Start(":3000")
+	server.Start(":" + config.Port)
 }
 
 func SetupRoutes(s *echo.Echo) {
@@ -34,9 +34,13 @@ func SetupRoutes(s *echo.Echo) {
 }
 
 func withUser(next echo.HandlerFunc) echo.HandlerFunc {
+	return SetContext(next, "user", "elo mordo")
+}
+
+func SetContext(n echo.HandlerFunc, key any, value any) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		ctx := context.WithValue(c.Request().Context(), "user", "ctx@example.com")
+		ctx := context.WithValue(c.Request().Context(), key, value)
 		c.SetRequest(c.Request().WithContext(ctx))
-		return next(c)
+		return n(c)
 	}
 }
