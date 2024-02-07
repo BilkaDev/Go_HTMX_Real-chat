@@ -29,8 +29,7 @@ func (*ApiServer) Run() {
 }
 
 func SetupRoutes(s *echo.Echo) {
-	userHandler := handler.UserHandler{}
-	s.GET("/user", userHandler.HandleUserShow)
+	handler.AuthRouter(s, "/auth")
 }
 
 func withUser(next echo.HandlerFunc) echo.HandlerFunc {
