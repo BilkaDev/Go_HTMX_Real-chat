@@ -3,6 +3,7 @@ package security
 import (
 	"fmt"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/bilkadev/Go_HTMX_Real-chat/config"
@@ -16,11 +17,11 @@ type JwtCustomClaims struct {
 }
 
 var tokenExpires = time.Hour * 24
+var JWT_SECRET string = os.Getenv("JWT_SECRET")
 
 const jwtKey = "jwt"
 
 func CreateAccesToken(userName string) (string, error) {
-	cfg := config.LoadEnv()
 	claims := JwtCustomClaims{
 		userName,
 		jwt.RegisteredClaims{
@@ -29,7 +30,7 @@ func CreateAccesToken(userName string) (string, error) {
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
-	t, err := token.SignedString([]byte(cfg.JWTSecret))
+	t, err := token.SignedString([]byte(JWT_SECRET))
 
 	if err != nil {
 		fmt.Println(err)
