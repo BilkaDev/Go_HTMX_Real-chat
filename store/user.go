@@ -43,3 +43,9 @@ func (us *UserStore) FindOneByEmail(email string) (*model.User, error) {
 	query := us.Db.First(&u, "email = ?", email)
 	return &u, query.Error
 }
+
+func (us *UserStore) FindOneByUserName(userName string) (*model.User, error) {
+	var u model.User
+	query := us.Db.First(&u, "user_name = ?", userName)
+	return &u, query.Error
+}

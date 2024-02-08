@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/bilkadev/Go_HTMX_Real-chat/model"
@@ -35,17 +34,34 @@ func (h *AuthHandler) HanndleAuthShow(c echo.Context) error {
 }
 
 func (h AuthHandler) HandleAuthLogin(c echo.Context) error {
-	u := model.User{
-		Email: "test",
+	u := model.UserIn{}
+	err := pkg.FormValidate(c, &u)
+	if err != nil {
+		return c.String(http.StatusBadRequest, "ERR_BAD_REQUEST "+err.Error())
 	}
-	return render(c, user.Show(u), layout.Base())
+
+	us, err := h.store.FindOneByUserName(u.UserName)
+	if err != nil {
+		return c.String(http.StatusUnauthorized, "ERR_UNAUTHORIZED Invalid userName or password")
+	}
+
+	valid := security.CheckPasswordHash(u.Password, us.Password)
+	if !valid {
+		return c.String(http.StatusUnauthorized, "ERR_UNAUTHORIZED Invalid userName or password")
+	}
+	t, err := security.CreateAccesToken(u.UserName)
+	if err != nil {
+		return c.String(http.StatusInternalServerError, "ERR_INTERNAL_SERVER, can't create access token")
+	}
+
+	security.WriteTokenCoocies(c, t)
+	return render(c, user.Show(*us), layout.Base())
 }
 
 func (h AuthHandler) HandleAuthLogout(c echo.Context) error {
-	u := model.User{
-		Email: "test",
-	}
-	return render(c, user.Show(u), layout.Base())
+	//  delete coockies from session
+	security.ClearSeassion(c)
+	return c.String(http.StatusNoContent, "logged out sccessfuly")
 }
 
 func (h AuthHandler) HandleAuthSignUp(c echo.Context) error {
@@ -59,6 +75,10 @@ func (h AuthHandler) HandleAuthSignUp(c echo.Context) error {
 	if ok == nil {
 		return c.String(http.StatusConflict, "ERR_CONFLICT user with given email already exists")
 	}
+	_, ok = h.store.FindOneByUserName(u.UserName)
+	if ok == nil {
+		return c.String(http.StatusConflict, "ERR_CONFLICT user with given userName already exists")
+	}
 
 	hashPwd, err := security.HashPassword(u.Password)
 	if err != nil {
@@ -66,6 +86,15 @@ func (h AuthHandler) HandleAuthSignUp(c echo.Context) error {
 	}
 	// generate hash password
 	u.Password = hashPwd
+
+	// random avatar pics
+
+	g := "boy"
+	if u.Gender == "female" {
+		g = "girl"
+	}
+	u.Avatar = "https://avatar.iran.liara.run/public/" + g + "?username=" + u.UserName
+
 	_, err = h.store.Create(&u)
 	if err != nil {
 		return c.String(http.StatusBadRequest, "ERR_BAD_REQUEST"+err.Error())
@@ -75,6 +104,7 @@ func (h AuthHandler) HandleAuthSignUp(c echo.Context) error {
 	if err != nil {
 		return c.String(http.StatusInternalServerError, "ERR_INTERNAL_SERVER, can't create access token")
 	}
-	fmt.Println(t)
+
+	security.WriteTokenCoocies(c, t)
 	return render(c, user.Show(u), layout.Base())
 }

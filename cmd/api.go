@@ -1,8 +1,6 @@
 package main
 
 import (
-	"context"
-
 	"github.com/bilkadev/Go_HTMX_Real-chat/config"
 	"github.com/bilkadev/Go_HTMX_Real-chat/handler"
 	"github.com/bilkadev/Go_HTMX_Real-chat/middleware"
@@ -23,11 +21,10 @@ func (*ApiServer) Run() {
 	config := config.LoadEnv()
 
 	store := store.NewSqliteStore()
-
 	server.Static("/assets", "assets")
 
+	server.Use(SetConfig(config))
 	server.Use(middleware.LoggerMiddleware)
-
 	server.Use(withUser)
 
 	SetupRoutes(server, store)
@@ -43,10 +40,15 @@ func withUser(next echo.HandlerFunc) echo.HandlerFunc {
 	return SetContext(next, "user", "elo mordo")
 }
 
-func SetContext(n echo.HandlerFunc, key any, value any) echo.HandlerFunc {
+func SetContext(n echo.HandlerFunc, key string, value any) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		ctx := context.WithValue(c.Request().Context(), key, value)
-		c.SetRequest(c.Request().WithContext(ctx))
+		c.Set(key, value)
 		return n(c)
+	}
+}
+
+func SetConfig(config *config.Config) echo.MiddlewareFunc {
+	return func(next echo.HandlerFunc) echo.HandlerFunc {
+		return SetContext(next, "env", config)
 	}
 }
