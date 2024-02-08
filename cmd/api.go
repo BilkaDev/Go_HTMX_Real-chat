@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/bilkadev/Go_HTMX_Real-chat/handler"
-	"github.com/bilkadev/Go_HTMX_Real-chat/types"
+	"github.com/bilkadev/Go_HTMX_Real-chat/store"
 	"github.com/labstack/echo/v4"
 )
 
@@ -20,7 +20,7 @@ func (*ApiServer) Run() {
 	server := echo.New()
 	config := LoadEnv()
 
-	store := NewSqliteStore()
+	store := store.NewSqliteStore()
 
 	server.Static("/assets", "assets")
 
@@ -31,8 +31,8 @@ func (*ApiServer) Run() {
 	server.Start(":" + config.Port)
 }
 
-func SetupRoutes(s *echo.Echo, storage *types.SqlStore) {
-	handler.AuthRouter(s, "/auth", storage)
+func SetupRoutes(s *echo.Echo, store *store.SqlStore) {
+	handler.AuthRouter(s, "/auth", store)
 }
 
 func withUser(next echo.HandlerFunc) echo.HandlerFunc {
