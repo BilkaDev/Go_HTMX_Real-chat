@@ -1,4 +1,4 @@
-package main
+package config
 
 import (
 	"log"
@@ -8,8 +8,9 @@ import (
 )
 
 type Config struct {
-	Port  string
-	State string
+	Port      string
+	State     string
+	JWTSecret string
 }
 
 func LoadEnv() *Config {
@@ -29,9 +30,15 @@ func LoadEnv() *Config {
 		log.Fatalf("ENV PORT must be defined")
 	}
 
+	JWTSecret := os.Getenv("JWT_SECRET")
+	if JWTSecret == "" {
+		log.Fatalf("ENV JWT_SECRET must be defined")
+	}
+
 	config := Config{
-		State: state,
-		Port:  port,
+		State:     state,
+		Port:      port,
+		JWTSecret: JWTSecret,
 	}
 	return &config
 }

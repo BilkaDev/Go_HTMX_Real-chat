@@ -3,7 +3,9 @@ package main
 import (
 	"context"
 
+	"github.com/bilkadev/Go_HTMX_Real-chat/config"
 	"github.com/bilkadev/Go_HTMX_Real-chat/handler"
+	"github.com/bilkadev/Go_HTMX_Real-chat/middleware"
 	"github.com/bilkadev/Go_HTMX_Real-chat/store"
 	"github.com/labstack/echo/v4"
 )
@@ -18,11 +20,13 @@ func NewApiServer() *ApiServer {
 
 func (*ApiServer) Run() {
 	server := echo.New()
-	config := LoadEnv()
+	config := config.LoadEnv()
 
 	store := store.NewSqliteStore()
 
 	server.Static("/assets", "assets")
+
+	server.Use(middleware.LoggerMiddleware)
 
 	server.Use(withUser)
 

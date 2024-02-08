@@ -4,6 +4,7 @@ import (
 	"github.com/bilkadev/Go_HTMX_Real-chat/model"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 )
 
 type SqlStore struct {
@@ -11,7 +12,10 @@ type SqlStore struct {
 }
 
 func NewSqliteStore() *SqlStore {
-	db, err := gorm.Open(sqlite.Open("storage.db"), &gorm.Config{})
+
+	db, err := gorm.Open(sqlite.Open("storage.db"), &gorm.Config{
+		Logger: logger.Default.LogMode(logger.Info),
+	})
 	if err != nil {
 		panic("Failed to connect database")
 	}
