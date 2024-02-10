@@ -1,6 +1,8 @@
 package main
 
 import (
+	"net/http"
+
 	"github.com/bilkadev/Go_HTMX_Real-chat/config"
 	"github.com/bilkadev/Go_HTMX_Real-chat/handler"
 	"github.com/bilkadev/Go_HTMX_Real-chat/middleware"
@@ -18,26 +20,27 @@ func NewApiServer() *ApiServer {
 
 func (*ApiServer) Run() {
 	server := echo.New()
-	config := config.LoadEnv()
+	env := config.LoadEnv()
 
 	store := store.NewSqliteStore()
-	server.Static("/assets", "assets")
+	server.Static("/", "public")
+	server.GET("/health", func(c echo.Context) error {
+		return c.JSON(http.StatusOK, struct{ Status string }{Status: "OK"})
+	})
 
-	server.Use(SetConfig(config))
+	server.Use(SetEnv(env))
+	server.Use(middleware.CurrentUser)
 	server.Use(middleware.LoggerMiddleware)
-	server.Use(withUser)
 
 	SetupRoutes(server, store)
 
-	server.Start(":" + config.Port)
+	server.Start(":" + env.Port)
 }
 
 func SetupRoutes(s *echo.Echo, store *store.SqlStore) {
 	handler.AuthRouter(s, "/auth", store)
-}
-
-func withUser(next echo.HandlerFunc) echo.HandlerFunc {
-	return SetContext(next, "user", "elo mordo")
+	handler.UserRouter(s, "user", store)
+	handler.MessageRouter(s, "/message", store)
 }
 
 func SetContext(n echo.HandlerFunc, key string, value any) echo.HandlerFunc {
@@ -47,8 +50,8 @@ func SetContext(n echo.HandlerFunc, key string, value any) echo.HandlerFunc {
 	}
 }
 
-func SetConfig(config *config.Config) echo.MiddlewareFunc {
+func SetEnv(env *config.Env) echo.MiddlewareFunc {
 	return func(next echo.HandlerFunc) echo.HandlerFunc {
-		return SetContext(next, "env", config)
+		return SetContext(next, config.EnvKey.String(), env)
 	}
 }

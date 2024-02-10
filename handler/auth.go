@@ -49,7 +49,7 @@ func (h AuthHandler) HandleAuthLogin(c echo.Context) error {
 	if !valid {
 		return c.String(http.StatusUnauthorized, "ERR_UNAUTHORIZED Invalid userName or password")
 	}
-	t, err := security.CreateAccesToken(u.UserName)
+	t, err := security.CreateAccesToken(u.UserName, us.ID)
 	if err != nil {
 		return c.String(http.StatusInternalServerError, "ERR_INTERNAL_SERVER, can't create access token")
 	}
@@ -100,7 +100,7 @@ func (h AuthHandler) HandleAuthSignUp(c echo.Context) error {
 		return c.String(http.StatusBadRequest, "ERR_BAD_REQUEST"+err.Error())
 	}
 	//  generate JWT
-	t, err := security.CreateAccesToken(u.Email)
+	t, err := security.CreateAccesToken(u.UserName, u.ID)
 	if err != nil {
 		return c.String(http.StatusInternalServerError, "ERR_INTERNAL_SERVER, can't create access token")
 	}

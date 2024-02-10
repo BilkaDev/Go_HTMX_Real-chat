@@ -1,15 +1,36 @@
 package handler
 
 import (
-	"github.com/bilkadev/Go_HTMX_Real-chat/model"
-	"github.com/bilkadev/Go_HTMX_Real-chat/view/layout"
-	"github.com/bilkadev/Go_HTMX_Real-chat/view/user"
+	"net/http"
+
+	"github.com/bilkadev/Go_HTMX_Real-chat/config"
+	"github.com/bilkadev/Go_HTMX_Real-chat/middleware"
+	"github.com/bilkadev/Go_HTMX_Real-chat/store"
 	"github.com/labstack/echo/v4"
 )
 
-type UserHandler struct{}
+type UserHandler struct {
+	store *store.UserStore
+}
 
-func (h UserHandler) HandleUserShow(c echo.Context) error {
-	u := model.User{Email: "email@exmaple.pl"}
-	return render(c, user.Show(u), layout.Base())
+func UserRouter(e *echo.Echo, prefix string, storage *store.SqlStore) {
+	uh := &UserHandler{
+		store: store.NewUserStore(storage),
+	}
+	g := e.Group(prefix)
+	g.Use(middleware.RequireAuth)
+	g.GET("", uh.HandleUsersShow)
+}
+
+func (h UserHandler) HandleUsersShow(c echo.Context) error {
+	senderId, ok := c.Get(config.CurrentUserId.String()).(uint)
+	if !ok {
+		return c.String(http.StatusInternalServerError, "ERR_INTERNAL_SERVER can't parse to uint")
+	}
+	_, err := h.store.FindAllWithoutSender(senderId)
+	if err != nil {
+		return c.String(http.StatusInternalServerError, "ERR_INTERNAL_SERVER "+err.Error())
+	}
+
+	return c.String(http.StatusOK, "users side bar ")
 }

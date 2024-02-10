@@ -26,9 +26,9 @@ func (us *UserStore) Create(u *model.User) (*model.User, error) {
 	return u, cu.Error
 }
 
-func (us *UserStore) FindAll() (*[]model.User, error) {
+func (us *UserStore) FindAllWithoutSender(senderId uint) (*[]model.User, error) {
 	var users []model.User
-	query := us.Db.Find(&users)
+	query := us.Db.Find(&users).Where("id != ?", senderId)
 	return &users, query.Error
 }
 

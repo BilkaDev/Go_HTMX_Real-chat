@@ -7,13 +7,13 @@ import (
 	"github.com/joho/godotenv"
 )
 
-type Config struct {
+type Env struct {
 	Port      string
 	State     string
 	JWTSecret string
 }
 
-func LoadEnv() *Config {
+func LoadEnv() *Env {
 	err := godotenv.Load(".env")
 	if err != nil {
 		log.Fatalf("Error loading .env file: %s", err)
@@ -35,10 +35,10 @@ func LoadEnv() *Config {
 		log.Fatalf("ENV JWT_SECRET must be defined")
 	}
 
-	config := Config{
+	env := Env{
 		State:     state,
 		Port:      port,
 		JWTSecret: JWTSecret,
 	}
-	return &config
+	return &env
 }

@@ -19,7 +19,7 @@ func NewSqliteStore() *SqlStore {
 	if err != nil {
 		panic("Failed to connect database")
 	}
-	db.AutoMigrate(&model.User{})
+	db.AutoMigrate(&model.User{}, &model.Conversation{}, &model.Message{})
 
 	return &SqlStore{
 		db,
