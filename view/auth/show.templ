@@ -1,7 +1,9 @@
 package auth
 
-templ Show() {
-	<div>
-		Login form
-	</div>
+templ Show(value string) {
+	if value == "signup" {
+		@SignUp()
+	} else {
+		@Login()
+	}
 }

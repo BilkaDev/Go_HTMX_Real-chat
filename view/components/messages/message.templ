@@ -1,0 +1,27 @@
+package components
+
+templ Message(sender bool, message string, time string) {
+	<div
+		if sender {
+			class="chat chat-end"
+		} else {
+			class="chat chat-start"
+		}
+	>
+		<div class="chat-image avatar">
+			<div class="w-10 rounded-full">
+				<img alt="Tailwind CSS chat bubble component" src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"/>
+			</div>
+		</div>
+		<div class="chat-header">
+			<time class="text-xs text-gray-200 opacity-50">{ time }</time>
+		</div>
+		<div
+			if sender {
+				class="chat-bubble chat-bubble-info"
+			} else {
+				class="chat-bubble"
+			}
+		>{ message }</div>
+	</div>
+}

@@ -1,0 +1,18 @@
+package home
+
+import sidebar "github.com/bilkadev/Go_HTMX_Real-chat/view/components/sidebar"
+import ui "github.com/bilkadev/Go_HTMX_Real-chat/view/components/ui"
+import messages "github.com/bilkadev/Go_HTMX_Real-chat/view/components/messages"
+
+templ Show(fullName string) {
+	@ui.GlassCard("flex sm:h-[450px] md:h-[550px] rounded-lg overflow-hidden") {
+		if fullName == "" {
+			<div class="w-[300px] flex items-center justify-center">
+				<p class="font-bold text-gray-200">You are unauthorized</p>
+			</div>
+		} else {
+			@sidebar.Sidebar()
+			@messages.MessageContainer("Walaszek Uj")
+		}
+	}
+}

@@ -1,0 +1,34 @@
+package components 
+
+templ Sidebar() {
+	<div class="border-r border-slate-500 p-4 flex flex-col">
+		<div class="search-input">
+			<form class="relative">
+				<input type="text" placeholder="Search..." class="input input-bordered rounded-full"/>
+				<button type="submit" class="btn btn-circle bg-sky-202 text-white absolute right-0"><img style="width:1.8rem" src="/assets/image/icon/search.svg" alt="search icon"/></button>
+			</form>
+		</div>
+		<div class="divider px-3"></div>
+		<div class="conversations py-2 flex flex-col overflow-auto">
+			@Conversation("https://avatar.iran.liara.run/public", "Marcin Bilka")
+			@Conversation("https://avatar.iran.liara.run/public", "Marcin Bilka")
+			@Conversation("https://avatar.iran.liara.run/public", "Marcin Bilka")
+			@Conversation("https://avatar.iran.liara.run/public", "Marcin Bilka")
+			@Conversation("https://avatar.iran.liara.run/public", "Marcin Bilka")
+			@Conversation("https://avatar.iran.liara.run/public", "Marcin Bilka")
+			@Conversation("https://avatar.iran.liara.run/public", "Marcin Bilka")
+			@Conversation("https://avatar.iran.liara.run/public", "Marcin Bilka")
+			@Conversation("https://avatar.iran.liara.run/public", "Marcin Bilka")
+			@Conversation("https://avatar.iran.liara.run/public", "Marcin Bilka")
+			@Conversation("https://avatar.iran.liara.run/public", "Marcin Bilka")
+			@Conversation("https://avatar.iran.liara.run/public", "Marcin Bilka")
+			@Conversation("https://avatar.iran.liara.run/public", "Marcin Bilka")
+			@Conversation("https://avatar.iran.liara.run/public", "Marcin Bilka")
+		</div>
+		<div class="logout-btn mt-auto w-6 h-6 pb-2">
+			<button class="mt-2">
+				<img class="w-6 h-6 " src="/assets/image/icon/logout.svg" alt="logout btn"/>
+			</button>
+		</div>
+	</div>
+}

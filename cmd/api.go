@@ -24,9 +24,6 @@ func (*ApiServer) Run() {
 
 	store := store.NewSqliteStore()
 	server.Static("/", "public")
-	server.GET("/health", func(c echo.Context) error {
-		return c.JSON(http.StatusOK, struct{ Status string }{Status: "OK"})
-	})
 
 	server.Use(SetEnv(env))
 	server.Use(middleware.CurrentUser)
@@ -38,6 +35,9 @@ func (*ApiServer) Run() {
 }
 
 func SetupRoutes(s *echo.Echo, store *store.SqlStore) {
+	s.GET("/health", func(c echo.Context) error {
+		return c.JSON(http.StatusOK, struct{ Status string }{Status: "OK"})
+	})
 	handler.AuthRouter(s, "/auth", store)
 	handler.UserRouter(s, "user", store)
 	handler.MessageRouter(s, "/message", store)

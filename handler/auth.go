@@ -7,7 +7,6 @@ import (
 	"github.com/bilkadev/Go_HTMX_Real-chat/pkg"
 	"github.com/bilkadev/Go_HTMX_Real-chat/pkg/security"
 	"github.com/bilkadev/Go_HTMX_Real-chat/store"
-	"github.com/bilkadev/Go_HTMX_Real-chat/view/auth"
 	"github.com/bilkadev/Go_HTMX_Real-chat/view/layout"
 	"github.com/bilkadev/Go_HTMX_Real-chat/view/user"
 	"github.com/labstack/echo/v4"
@@ -22,15 +21,9 @@ func AuthRouter(e *echo.Echo, prefix string, storage *store.SqlStore) {
 		store: store.NewUserStore(storage),
 	}
 	g := e.Group(prefix)
-	g.GET("", ah.HanndleAuthShow)
 	g.POST("/login", ah.HandleAuthLogin)
 	g.POST("/signup", ah.HandleAuthSignUp)
 	g.POST("/logout", ah.HandleAuthLogout)
-}
-
-func (h *AuthHandler) HanndleAuthShow(c echo.Context) error {
-	_ = model.User{FullName: "adam", Email: "tests@wdp.pl"}
-	return render(c, auth.Show(), layout.Base())
 }
 
 func (h AuthHandler) HandleAuthLogin(c echo.Context) error {

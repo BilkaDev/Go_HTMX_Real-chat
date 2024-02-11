@@ -1,5 +1,7 @@
 package layout
 
+import "os"
+
 templ Application() {
 	<!DOCTYPE html>
 	<html lang="en">
@@ -8,7 +10,11 @@ templ Application() {
 			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 			<title>GoChat</title>
 			<script src="/assets/js/htmx.min.js" defer></script>
-			<script src="/assets/js/tailwindcss.js" defer></script>
+			<link href="/assets/css/daisy.css" rel="stylesheet" type="text/css"/>
+			<link href="/assets/css/output.css" rel="stylesheet" type="text/css"/>
+			if os.Getenv("STATE") == "dev" {
+				<script src="https://cdn.tailwindcss.com"></script>
+			}
 		</head>
 		<body>
 			{ children... }

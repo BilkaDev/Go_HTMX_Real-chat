@@ -1,0 +1,74 @@
+package auth
+
+import "github.com/bilkadev/Go_HTMX_Real-chat/view/components/ui"
+
+templ SignUp() {
+	<div class="flex flex-col items-center justify-center min-w-96 mx-auto">
+		@ui.GlassCard("w-full p-6 rounded-lg shadow-md") {
+			<h1 class="mb-4 text-3xl font-semibold text-center text-gray-300">
+				SignUp
+				<span class="text-blue-500">GoChat</span>
+			</h1>
+			<form onsubmit="">
+				<div>
+					<input
+						type="text"
+						placeholder="Enter fullname"
+						class="w-full input input-bordered h-10"
+					/>
+				</div>
+				<div class="mt-2">
+					<input
+						type="text"
+						placeholder="Enter username"
+						class="w-full input input-bordered h-10"
+					/>
+				</div>
+				<div class="mt-2">
+					<input
+						type="email"
+						placeholder="Enter email"
+						class="w-full input input-bordered h-10"
+					/>
+				</div>
+				<div class="mt-2">
+					<input
+						type="password"
+						placeholder="Enter Password"
+						class="w-full input input-bordered h-10"
+					/>
+				</div>
+				<div class="mt-2">
+					<input
+						type="password"
+						placeholder="Confirm Password"
+						class="w-full input input-bordered h-10"
+					/>
+				</div>
+				<div class="flex">
+					<div class="form-control">
+						<label class="label gap-2 cursor-pointer">
+							<span class="label-text text-indigo-50">Male</span>
+							<input type="checkbox" class="checkbox border-slate-900"/>
+						</label>
+					</div>
+					<div class="form-control">
+						<label class="label gap-2 cursor-pointer">
+							<span class="label-text text-indigo-50">Female</span>
+							<input type="checkbox" class="checkbox border-slate-900"/>
+						</label>
+					</div>
+				</div>
+				<a href="/login" class="text-sm text-indigo-50  hover:underline hover:text-blue-600 mt-2 inline-block">
+					Already have an account?
+				</a>
+				<div class="mt-2">
+					<button class="btn btn-block btn-sm">
+						<span className="loading loading-spinner "></span>
+						Sign Up
+					</button>
+				</div>
+			</form>
+		}
+	</div>
+}
