@@ -16,6 +16,7 @@ func NewSqliteStore() *SqlStore {
 	db, err := gorm.Open(sqlite.Open("storage.db"), &gorm.Config{
 		Logger: logger.Default.LogMode(logger.Info),
 	})
+
 	if err != nil {
 		panic("Failed to connect database")
 	}

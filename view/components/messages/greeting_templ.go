@@ -36,7 +36,7 @@ func Greeting(fullName string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</p><p>Select a peron do you want to talk to</p><img class=\"w-10\" src=\"/assets/image/icon/comments.svg\" alt=\"icon talking\"></div></div>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</p><p>Select a person do you want to talk to</p><img class=\"w-10\" src=\"/assets/image/icon/comments.svg\" alt=\"icon talking\"></div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

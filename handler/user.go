@@ -6,6 +6,7 @@ import (
 	"github.com/bilkadev/Go_HTMX_Real-chat/config"
 	"github.com/bilkadev/Go_HTMX_Real-chat/middleware"
 	"github.com/bilkadev/Go_HTMX_Real-chat/store"
+	components "github.com/bilkadev/Go_HTMX_Real-chat/view/components/sidebar"
 	"github.com/labstack/echo/v4"
 )
 
@@ -27,10 +28,11 @@ func (h UserHandler) HandleUsersShow(c echo.Context) error {
 	if !ok {
 		return c.String(http.StatusInternalServerError, "ERR_INTERNAL_SERVER can't parse to uint")
 	}
-	_, err := h.store.FindAllWithoutSender(senderId)
+
+	users, err := h.store.FindAllWithoutSender(senderId)
 	if err != nil {
 		return c.String(http.StatusInternalServerError, "ERR_INTERNAL_SERVER "+err.Error())
 	}
 
-	return c.String(http.StatusOK, "users side bar ")
+	return render(c, components.Conversations(*users))
 }

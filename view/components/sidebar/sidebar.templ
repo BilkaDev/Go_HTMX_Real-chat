@@ -1,6 +1,8 @@
 package components 
 
-templ Sidebar() {
+import "github.com/bilkadev/Go_HTMX_Real-chat/model"
+
+templ Sidebar(users []model.User) {
 	<div class="border-r border-slate-500 p-4 flex flex-col">
 		<div class="search-input">
 			<form class="relative">
@@ -9,24 +11,14 @@ templ Sidebar() {
 			</form>
 		</div>
 		<div class="divider px-3"></div>
-		<div class="conversations py-2 flex flex-col overflow-auto">
-			@Conversation("https://avatar.iran.liara.run/public", "Marcin Bilka")
-			@Conversation("https://avatar.iran.liara.run/public", "Marcin Bilka")
-			@Conversation("https://avatar.iran.liara.run/public", "Marcin Bilka")
-			@Conversation("https://avatar.iran.liara.run/public", "Marcin Bilka")
-			@Conversation("https://avatar.iran.liara.run/public", "Marcin Bilka")
-			@Conversation("https://avatar.iran.liara.run/public", "Marcin Bilka")
-			@Conversation("https://avatar.iran.liara.run/public", "Marcin Bilka")
-			@Conversation("https://avatar.iran.liara.run/public", "Marcin Bilka")
-			@Conversation("https://avatar.iran.liara.run/public", "Marcin Bilka")
-			@Conversation("https://avatar.iran.liara.run/public", "Marcin Bilka")
-			@Conversation("https://avatar.iran.liara.run/public", "Marcin Bilka")
-			@Conversation("https://avatar.iran.liara.run/public", "Marcin Bilka")
-			@Conversation("https://avatar.iran.liara.run/public", "Marcin Bilka")
-			@Conversation("https://avatar.iran.liara.run/public", "Marcin Bilka")
+		<div hx-get="/user" hx-trigger="load">
+			<div class="flex justify-center">
+				<span class="loading loading-dots loading-lg"></span>
+			</div>
+			@Conversations(users)
 		</div>
 		<div class="logout-btn mt-auto w-6 h-6 pb-2">
-			<button class="mt-2">
+			<button hx-post="/auth/logout" class="mt-2">
 				<img class="w-6 h-6 " src="/assets/image/icon/logout.svg" alt="logout btn"/>
 			</button>
 		</div>

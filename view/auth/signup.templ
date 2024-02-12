@@ -9,57 +9,76 @@ templ SignUp() {
 				SignUp
 				<span class="text-blue-500">GoChat</span>
 			</h1>
-			<form onsubmit="">
+			<form id="login-form" hx-post="/auth/signup" autocomplete="off">
 				<div>
 					<input
 						type="text"
+						name="fullName"
 						placeholder="Enter fullname"
 						class="w-full input input-bordered h-10"
+						required
+						minlength="3"
+						max="100"
 					/>
 				</div>
 				<div class="mt-2">
 					<input
+						name="userName"
+						value=""
 						type="text"
 						placeholder="Enter username"
 						class="w-full input input-bordered h-10"
+						required
+						minlength="3"
+						maxlength="100"
 					/>
 				</div>
 				<div class="mt-2">
 					<input
+						name="email"
 						type="email"
 						placeholder="Enter email"
 						class="w-full input input-bordered h-10"
+						maxlength="255"
 					/>
 				</div>
 				<div class="mt-2">
 					<input
+						name="password"
 						type="password"
 						placeholder="Enter Password"
 						class="w-full input input-bordered h-10"
+						required
+						minlength="6"
+						max="255"
 					/>
 				</div>
 				<div class="mt-2">
 					<input
+						name="repassword"
 						type="password"
 						placeholder="Confirm Password"
 						class="w-full input input-bordered h-10"
+						required
+						minlength="6"
+						max="255"
 					/>
 				</div>
 				<div class="flex">
 					<div class="form-control">
 						<label class="label gap-2 cursor-pointer">
 							<span class="label-text text-indigo-50">Male</span>
-							<input type="checkbox" class="checkbox border-slate-900"/>
+							<input id="gender-male" type="checkbox" name="gender" value="male" class="checkbox border-slate-900"/>
 						</label>
 					</div>
 					<div class="form-control">
 						<label class="label gap-2 cursor-pointer">
 							<span class="label-text text-indigo-50">Female</span>
-							<input type="checkbox" class="checkbox border-slate-900"/>
+							<input id="gender-female" type="checkbox" name="gender" value="female" class="checkbox border-slate-900"/>
 						</label>
 					</div>
 				</div>
-				<a href="/login" class="text-sm text-indigo-50  hover:underline hover:text-blue-600 mt-2 inline-block">
+				<a hx-boost="true" href="/login" class="text-sm text-indigo-50  hover:underline hover:text-blue-600 mt-2 inline-block">
 					Already have an account?
 				</a>
 				<div class="mt-2">
@@ -71,4 +90,20 @@ templ SignUp() {
 			</form>
 		}
 	</div>
+	<script>
+	const checkboxFemale =	document.getElementById("gender-female")
+	const checkboxMale =document.getElementById("gender-male")
+    
+    checkboxFemale.addEventListener('change',(e)=> {
+        if (e.target.checked) {
+            checkboxMale.checked = false
+        }
+    })
+    
+    checkboxMale.addEventListener('change',(e)=> {
+        if (e.target.checked) {
+            checkboxFemale.checked = false
+        }
+    })
+	</script>
 }

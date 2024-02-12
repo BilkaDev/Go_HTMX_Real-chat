@@ -76,6 +76,9 @@ func ClearSeassion(c echo.Context) error {
 	cookie := new(http.Cookie)
 	cookie.Name = JWT_KEY_COOKIES
 	cookie.Value = ""
+	cookie.HttpOnly = true
+	cookie.Path = "/"
+	cookie.SameSite = 3
 	cookie.MaxAge = 0
 	cookie.Expires = time.Now()
 	c.SetCookie(cookie)

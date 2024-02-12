@@ -1,7 +1,5 @@
 package layout
 
-import "os"
-
 templ Application() {
 	<!DOCTYPE html>
 	<html lang="en">
@@ -12,12 +10,12 @@ templ Application() {
 			<script src="/assets/js/htmx.min.js" defer></script>
 			<link href="/assets/css/daisy.css" rel="stylesheet" type="text/css"/>
 			<link href="/assets/css/output.css" rel="stylesheet" type="text/css"/>
-			if os.Getenv("STATE") == "dev" {
-				<script src="https://cdn.tailwindcss.com"></script>
-			}
+			<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"/>
 		</head>
-		<body>
+		<body id="htmx-body">
 			{ children... }
 		</body>
+		<script src="/assets/js/index.js" defer></script>
+		<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 	</html>
 }

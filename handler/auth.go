@@ -7,8 +7,7 @@ import (
 	"github.com/bilkadev/Go_HTMX_Real-chat/pkg"
 	"github.com/bilkadev/Go_HTMX_Real-chat/pkg/security"
 	"github.com/bilkadev/Go_HTMX_Real-chat/store"
-	"github.com/bilkadev/Go_HTMX_Real-chat/view/layout"
-	"github.com/bilkadev/Go_HTMX_Real-chat/view/user"
+	"github.com/bilkadev/Go_HTMX_Real-chat/view/home"
 	"github.com/labstack/echo/v4"
 )
 
@@ -48,12 +47,15 @@ func (h AuthHandler) HandleAuthLogin(c echo.Context) error {
 	}
 
 	security.WriteTokenCoocies(c, t)
-	return render(c, user.Show(*us), layout.Base())
+
+	c.Response().Header().Set("HX-Push-Url", "/")
+	return render(c, home.Show(us.FullName, []model.User{}))
 }
 
 func (h AuthHandler) HandleAuthLogout(c echo.Context) error {
 	//  delete coockies from session
 	security.ClearSeassion(c)
+	c.Response().Header().Set("hx-redirect", "/login")
 	return c.String(http.StatusNoContent, "logged out sccessfuly")
 }
 
@@ -62,6 +64,10 @@ func (h AuthHandler) HandleAuthSignUp(c echo.Context) error {
 	err := pkg.FormValidate(c, &u)
 	if err != nil {
 		return c.String(http.StatusBadRequest, "ERR_BAD_REQUEST "+err.Error())
+	}
+	if u.Password != c.FormValue("repassword") {
+
+		return c.String(http.StatusBadRequest, "ERR_BAD_REQUEST password dosen't match")
 	}
 
 	_, ok := h.store.FindOneByEmail(u.Email)
@@ -99,5 +105,6 @@ func (h AuthHandler) HandleAuthSignUp(c echo.Context) error {
 	}
 
 	security.WriteTokenCoocies(c, t)
-	return render(c, user.Show(u), layout.Base())
+	c.Response().Header().Set("HX-Push-Url", "/")
+	return render(c, home.Show(u.FullName, []model.User{}))
 }

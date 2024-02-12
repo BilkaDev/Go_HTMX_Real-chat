@@ -10,8 +10,6 @@ import "context"
 import "io"
 import "bytes"
 
-import "os"
-
 func Application() templ.Component {
 	return templ.ComponentFunc(func(ctx context.Context, templ_7745c5c3_W io.Writer) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templ_7745c5c3_W.(*bytes.Buffer)
@@ -25,17 +23,7 @@ func Application() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<!doctype html><html lang=\"en\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><title>GoChat</title><script src=\"/assets/js/htmx.min.js\" defer></script><link href=\"/assets/css/daisy.css\" rel=\"stylesheet\" type=\"text/css\"><link href=\"/assets/css/output.css\" rel=\"stylesheet\" type=\"text/css\">")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		if os.Getenv("STATE") == "dev" {
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<script src=\"https://cdn.tailwindcss.com\"></script>")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</head><body>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<!doctype html><html lang=\"en\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><title>GoChat</title><script src=\"/assets/js/htmx.min.js\" defer></script><link href=\"/assets/css/daisy.css\" rel=\"stylesheet\" type=\"text/css\"><link href=\"/assets/css/output.css\" rel=\"stylesheet\" type=\"text/css\"><link rel=\"stylesheet\" type=\"text/css\" href=\"https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css\"></head><body id=\"htmx-body\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -43,7 +31,7 @@ func Application() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</body></html>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</body><script src=\"/assets/js/index.js\" defer></script><script type=\"text/javascript\" src=\"https://cdn.jsdelivr.net/npm/toastify-js\"></script></html>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
