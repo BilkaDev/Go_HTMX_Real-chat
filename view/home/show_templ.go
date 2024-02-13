@@ -16,7 +16,7 @@ import sidebar "github.com/bilkadev/Go_HTMX_Real-chat/view/components/sidebar"
 import ui "github.com/bilkadev/Go_HTMX_Real-chat/view/components/ui"
 import messages "github.com/bilkadev/Go_HTMX_Real-chat/view/components/messages"
 
-func Show(fullName string, users []model.User) templ.Component {
+func Show(users []model.User) templ.Component {
 	return templ.ComponentFunc(func(ctx context.Context, templ_7745c5c3_W io.Writer) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templ_7745c5c3_W.(*bytes.Buffer)
 		if !templ_7745c5c3_IsBuffer {
@@ -43,7 +43,7 @@ func Show(fullName string, users []model.User) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = messages.MessageContainer(true, fullName).Render(ctx, templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = messages.MessageContainer().Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

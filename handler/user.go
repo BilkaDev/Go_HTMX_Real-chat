@@ -24,12 +24,12 @@ func UserRouter(e *echo.Echo, prefix string, storage *store.SqlStore) {
 }
 
 func (h UserHandler) HandleUsersShow(c echo.Context) error {
-	senderId, ok := c.Get(config.CurrentUserId.String()).(uint)
+	currentUserId, ok := c.Get(config.CurrentUserId.String()).(uint)
 	if !ok {
 		return c.String(http.StatusInternalServerError, "ERR_INTERNAL_SERVER can't parse to uint")
 	}
 
-	users, err := h.store.FindAllWithoutSender(senderId)
+	users, err := h.store.FindAllWithoutSender(currentUserId)
 	if err != nil {
 		return c.String(http.StatusInternalServerError, "ERR_INTERNAL_SERVER "+err.Error())
 	}

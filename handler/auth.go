@@ -49,7 +49,7 @@ func (h AuthHandler) HandleAuthLogin(c echo.Context) error {
 	security.WriteTokenCoocies(c, t)
 
 	c.Response().Header().Set("HX-Push-Url", "/")
-	return render(c, home.Show(us.FullName, []model.User{}))
+	return render(c, home.Show([]model.User{}))
 }
 
 func (h AuthHandler) HandleAuthLogout(c echo.Context) error {
@@ -106,5 +106,5 @@ func (h AuthHandler) HandleAuthSignUp(c echo.Context) error {
 
 	security.WriteTokenCoocies(c, t)
 	c.Response().Header().Set("HX-Push-Url", "/")
-	return render(c, home.Show(u.FullName, []model.User{}))
+	return render(c, home.Show([]model.User{}))
 }

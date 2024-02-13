@@ -1,18 +1,25 @@
 package components
 
-templ Messages(receiverName string) {
+import "github.com/bilkadev/Go_HTMX_Real-chat/model"
+import "strconv"
+
+templ Messages(currentUser *model.User, receiver *model.User, messages *[]model.Message) {
 	<div class="bg-slate-600 px-4 py-2 mb-2">
-		<span class="label-text">To:</span> <span class="text-gray-200 font-bold">{ receiverName }</span>
+		<span class="label-text">To:</span> <span class="text-gray-200 font-bold">{ receiver.FullName }</span>
 	</div>
-	<div class="messages px-4 flex-1 overflow-auto">
-		@Message(true, "You were the chosen one!", "12:45")
-		@Message(false, "You were the chosen one!", "12:45")
+	<div id="chat-message" class="messages px-4 flex-1 overflow-auto">
+		for _, m := range *messages {
+			@Message(currentUser.ID == m.SenderID, *currentUser, *receiver, m)
+		}
 	</div>
 	<div class="message-input">
-		<form class="px-4 my-3">
+		<form hx-post={ "/message/send/" + strconv.FormatUint(uint64(receiver.ID), 10) } hx-target="#chat-message" hx-swap="beforeend scroll:bottom" class="px-4 my-3">
 			<div class="w-full relative">
 				<input
 					type="text"
+					name="message"
+					required
+					minlength="1"
 					class="border text-sm rounded-lg block w-full p-2.5 bg-gray700 border-gray-600"
 				/>
 				<button type="submit" class="absolute inset-y-0 right-0 flex items-center pe-3">

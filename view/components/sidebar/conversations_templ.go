@@ -30,7 +30,7 @@ func Conversations(users []model.User) templ.Component {
 			return templ_7745c5c3_Err
 		}
 		for _, user := range users {
-			templ_7745c5c3_Err = Conversation(user.Avatar, user.FullName).Render(ctx, templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = Conversation(user).Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

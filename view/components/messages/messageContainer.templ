@@ -1,11 +1,7 @@
 package components
 
-templ MessageContainer(greeting bool, name string) {
-	<div class="min-w-[450px] flex flex-col">
-		if greeting {
-			@Greeting(name)
-		} else {
-			@Messages(name)
-		}
+templ MessageContainer() {
+	<div id="message-container" class="min-w-[450px] flex flex-col">
+		@Greeting()
 	</div>
 }

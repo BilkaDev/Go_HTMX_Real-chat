@@ -10,7 +10,10 @@ import "context"
 import "io"
 import "bytes"
 
-func Messages(receiverName string) templ.Component {
+import "github.com/bilkadev/Go_HTMX_Real-chat/model"
+import "strconv"
+
+func Messages(currentUser *model.User, receiver *model.User, messages *[]model.Message) templ.Component {
 	return templ.ComponentFunc(func(ctx context.Context, templ_7745c5c3_W io.Writer) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templ_7745c5c3_W.(*bytes.Buffer)
 		if !templ_7745c5c3_IsBuffer {
@@ -28,27 +31,33 @@ func Messages(receiverName string) templ.Component {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var2 string
-		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(receiverName)
+		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(receiver.FullName)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `view\components\messages\messages.templ`, Line: 4, Col: 90}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `view\components\messages\messages.templ`, Line: 7, Col: 95}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</span></div><div class=\"messages px-4 flex-1 overflow-auto\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</span></div><div id=\"chat-message\" class=\"messages px-4 flex-1 overflow-auto\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Message(true, "You were the chosen one!", "12:45").Render(ctx, templ_7745c5c3_Buffer)
+		for _, m := range *messages {
+			templ_7745c5c3_Err = Message(currentUser.ID == m.SenderID, *currentUser, *receiver, m).Render(ctx, templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><div class=\"message-input\"><form hx-post=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Message(false, "You were the chosen one!", "12:45").Render(ctx, templ_7745c5c3_Buffer)
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString("/message/send/" + strconv.FormatUint(uint64(receiver.ID), 10)))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><div class=\"message-input\"><form class=\"px-4 my-3\"><div class=\"w-full relative\"><input type=\"text\" class=\"border text-sm rounded-lg block w-full p-2.5 bg-gray700 border-gray-600\"> <button type=\"submit\" class=\"absolute inset-y-0 right-0 flex items-center pe-3\"><img class=\"w-6\" src=\"/assets/image/icon/send.svg\" alt=\"send icon\"></button></div></form></div>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" hx-target=\"#chat-message\" hx-swap=\"beforeend scroll:bottom\" class=\"px-4 my-3\"><div class=\"w-full relative\"><input type=\"text\" name=\"message\" required minlength=\"1\" class=\"border text-sm rounded-lg block w-full p-2.5 bg-gray700 border-gray-600\"> <button type=\"submit\" class=\"absolute inset-y-0 right-0 flex items-center pe-3\"><img class=\"w-6\" src=\"/assets/image/icon/send.svg\" alt=\"send icon\"></button></div></form></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

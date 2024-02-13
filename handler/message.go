@@ -9,6 +9,7 @@ import (
 	"github.com/bilkadev/Go_HTMX_Real-chat/model"
 	"github.com/bilkadev/Go_HTMX_Real-chat/pkg"
 	"github.com/bilkadev/Go_HTMX_Real-chat/store"
+	components "github.com/bilkadev/Go_HTMX_Real-chat/view/components/messages"
 	"github.com/labstack/echo/v4"
 )
 
@@ -38,11 +39,16 @@ func (h *MessageHandler) handleMessageSend(c echo.Context) error {
 	if err != nil {
 		return c.String(http.StatusBadRequest, "ERR_BAD_REQUEST "+err.Error())
 	}
-	if _, err = h.StoreUser.FindOne(m.ReceiverID); err != nil {
+	receiver, err := h.StoreUser.FindOne(m.ReceiverID)
+	if err != nil {
 		return c.String(http.StatusBadRequest, "ERR_BAD_REQUEST "+err.Error())
 	}
-	senderId := c.Get(config.CurrentUserId.String()).(uint)
-	m.SenderID = senderId
+	currentUserId := c.Get(config.CurrentUserId.String()).(uint)
+	m.SenderID = currentUserId
+	sender, err := h.StoreUser.FindOne(currentUserId)
+	if err != nil {
+		return c.String(http.StatusBadRequest, "ERR_BAD_REQUEST "+err.Error())
+	}
 
 	conversation := model.Conversation{}
 	h.StoreConversation.FindOneOrCreate(&conversation, m)
@@ -56,7 +62,7 @@ func (h *MessageHandler) handleMessageSend(c echo.Context) error {
 	}
 
 	// res 201 return new message
-	return c.String(http.StatusCreated, "send message ")
+	return render(c, components.Message(true, *sender, *receiver, m))
 }
 
 func (h *MessageHandler) handleMessagesShow(c echo.Context) error {
@@ -65,22 +71,31 @@ func (h *MessageHandler) handleMessagesShow(c echo.Context) error {
 	if err != nil {
 		return c.String(http.StatusInternalServerError, "ERR_INTERNAL_SERVER "+err.Error())
 	}
-	m.SenderID = c.Get(config.CurrentUserId.String()).(uint)
+	currentUserId := c.Get(config.CurrentUserId.String()).(uint)
+
+	receiver, err := h.StoreUser.FindOne(m.ReceiverID)
+	if err != nil {
+		return c.String(http.StatusBadRequest, "ERR_BAD_REQUEST "+err.Error())
+	}
+	currentUser, err := h.StoreUser.FindOne(currentUserId)
+	if err != nil {
+		return c.String(http.StatusBadRequest, "ERR_BAD_REQUEST "+err.Error())
+	}
 
 	conversation := model.Conversation{}
 
 	if _, err := h.StoreConversation.FindOne(&conversation, []uint{
-		m.SenderID,
+		currentUserId,
 		m.ReceiverID,
 	}); err != nil {
-		return c.String(http.StatusInternalServerError, "ERR_INTERNAL_SERVER "+err.Error())
+		return render(c, components.Messages(currentUser, receiver, &[]model.Message{}))
 	}
 
 	messages, err := h.StoreMessage.FindAll(conversation.ID)
 	if err != nil {
 		return c.String(http.StatusInternalServerError, "ERR_INTERNAL_SERVER "+err.Error())
 	}
-	fmt.Println(messages)
+	fmt.Println(*messages)
 
-	return c.String(http.StatusOK, " render messages")
+	return render(c, components.Messages(currentUser, receiver, messages))
 }

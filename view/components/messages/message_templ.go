@@ -10,7 +10,9 @@ import "context"
 import "io"
 import "bytes"
 
-func Message(sender bool, message string, time string) templ.Component {
+import "github.com/bilkadev/Go_HTMX_Real-chat/model"
+
+func Message(current bool, c model.User, r model.User, m model.Message) templ.Component {
 	return templ.ComponentFunc(func(ctx context.Context, templ_7745c5c3_W io.Writer) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templ_7745c5c3_W.(*bytes.Buffer)
 		if !templ_7745c5c3_IsBuffer {
@@ -27,7 +29,7 @@ func Message(sender bool, message string, time string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		if sender {
+		if current {
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" class=\"chat chat-end\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -38,14 +40,45 @@ func Message(sender bool, message string, time string) templ.Component {
 				return templ_7745c5c3_Err
 			}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("><div class=\"chat-image avatar\"><div class=\"w-10 rounded-full\"><img alt=\"Tailwind CSS chat bubble component\" src=\"https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg\"></div></div><div class=\"chat-header\"><time class=\"text-xs text-gray-200 opacity-50\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("><div class=\"chat-image avatar\"><div class=\"w-10 rounded-full\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		if current {
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<img alt=\"Tailwind CSS chat bubble component\" src=\"")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(c.Avatar))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\">")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		} else {
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<img alt=\"Tailwind CSS chat bubble component\" src=\"")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(r.Avatar))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\">")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div></div><div class=\"chat-header\"><time class=\"text-xs text-gray-200 opacity-50\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var2 string
-		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(time)
+		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(m.CreatedAt.UTC().Format("15:04"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `view\components\messages\message.templ`, Line: 16, Col: 56}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `view\components\messages\message.templ`, Line: 22, Col: 85}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 		if templ_7745c5c3_Err != nil {
@@ -55,7 +88,7 @@ func Message(sender bool, message string, time string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		if sender {
+		if current {
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" class=\"chat-bubble chat-bubble-info\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -71,9 +104,9 @@ func Message(sender bool, message string, time string) templ.Component {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var3 string
-		templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(message)
+		templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(m.Message)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `view\components\messages\message.templ`, Line: 24, Col: 12}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `view\components\messages\message.templ`, Line: 30, Col: 14}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 		if templ_7745c5c3_Err != nil {
