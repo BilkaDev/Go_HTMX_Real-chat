@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/bilkadev/Go_HTMX_Real-chat/config"
@@ -25,11 +26,13 @@ func UserRouter(e *echo.Group, prefix string, storage *store.SqlStore) {
 
 func (h UserHandler) HandleUsersShow(c echo.Context) error {
 	currentUserId, ok := c.Get(config.CurrentUserId.String()).(uint)
+	q := c.QueryParam("search")
+	fmt.Println("query:", q)
 	if !ok {
 		return c.String(http.StatusInternalServerError, "ERR_INTERNAL_SERVER can't parse to uint")
 	}
 
-	users, err := h.store.FindAllWithoutSender(currentUserId)
+	users, err := h.store.FindAllWithoutSender(currentUserId, q)
 	if err != nil {
 		return c.String(http.StatusInternalServerError, "ERR_INTERNAL_SERVER "+err.Error())
 	}

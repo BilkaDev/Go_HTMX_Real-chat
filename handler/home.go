@@ -28,7 +28,7 @@ func HomeRouter(e *echo.Group, prefix string, storage *store.SqlStore) {
 
 func (h *HomeHandler) handleHomeShow(c echo.Context) error {
 	cuId := c.Get(config.CurrentUserId.String()).(uint)
-	u, err := h.StoreUser.FindAllWithoutSender(cuId)
+	u, err := h.StoreUser.FindAllWithoutSender(cuId, "")
 	if err != nil {
 		fmt.Println(err.Error())
 		c.String(http.StatusInternalServerError, "ERR_INTERNAL_SERVER Something went wrong!")

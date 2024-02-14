@@ -28,7 +28,7 @@ func Sidebar(users []model.User) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"border-r border-slate-500 p-4 flex flex-col\"><div class=\"search-input\"><form class=\"relative\"><input type=\"text\" placeholder=\"Search...\" class=\"input input-bordered rounded-full\"> <button type=\"submit\" class=\"btn btn-circle bg-sky-202 text-white absolute right-0\"><img style=\"width:1.8rem\" src=\"/assets/image/icon/search.svg\" alt=\"search icon\"></button></form></div><div class=\"divider px-3\"></div>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"border-r border-slate-500 p-4 flex flex-col\"><div class=\"search-input\"><form class=\"relative\"><input name=\"search\" type=\"search\" hx-get=\"/user\" hx-trigger=\"input changed delay:500ms, search\" hx-target=\"#conversations\" hx-swap=\"outerHTML\" type=\"text\" placeholder=\"Search...\" class=\"input input-bordered rounded-full\"><div class=\"btn btn-circle bg-sky-202 text-white absolute right-0\"><img style=\"width:1.8rem\" src=\"/assets/image/icon/search.svg\" alt=\"search icon\"></div></form></div><div class=\"divider px-3\"></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

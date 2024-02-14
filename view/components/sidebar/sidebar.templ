@@ -9,8 +9,18 @@ templ Sidebar(users []model.User) {
 	<div class="border-r border-slate-500 p-4 flex flex-col">
 		<div class="search-input">
 			<form class="relative">
-				<input type="text" placeholder="Search..." class="input input-bordered rounded-full"/>
-				<button type="submit" class="btn btn-circle bg-sky-202 text-white absolute right-0"><img style="width:1.8rem" src="/assets/image/icon/search.svg" alt="search icon"/></button>
+				<input
+					name="search"
+					type="search"
+					hx-get="/user"
+					hx-trigger="input changed delay:500ms, search"
+					hx-target="#conversations"
+					hx-swap="outerHTML"
+					type="text"
+					placeholder="Search..."
+					class="input input-bordered rounded-full"
+				/>
+				<div class="btn btn-circle bg-sky-202 text-white absolute right-0"><img style="width:1.8rem" src="/assets/image/icon/search.svg" alt="search icon"/></div>
 			</form>
 		</div>
 		<div class="divider px-3"></div>
