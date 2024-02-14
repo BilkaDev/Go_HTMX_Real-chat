@@ -35,13 +35,14 @@ func (*ApiServer) Run() {
 }
 
 func SetupRoutes(s *echo.Echo, store *store.SqlStore) {
-	s.GET("/health", func(c echo.Context) error {
+	g := s.Group("/api/v1")
+	g.GET("/health", func(c echo.Context) error {
 		return c.JSON(http.StatusOK, struct{ Status string }{Status: "OK"})
 	})
-	handler.HomeRouter(s, "/home", store)
-	handler.AuthRouter(s, "/auth", store)
-	handler.UserRouter(s, "user", store)
-	handler.MessageRouter(s, "/message", store)
+	handler.HomeRouter(g, "/home", store)
+	handler.AuthRouter(g, "/auth", store)
+	handler.UserRouter(g, "/user", store)
+	handler.MessageRouter(g, "/message", store)
 }
 
 func SetContext(n echo.HandlerFunc, key string, value any) echo.HandlerFunc {

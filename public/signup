@@ -13,4 +13,4 @@
             checkboxFemale.checked = false
         }
     })
-	</script></div></body><script src="/assets/js/index.js" defer></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script></html>
+	</script></div></body><script type="text/javascript" defer src="https://cdn.jsdelivr.net/npm/toastify-js"></script><script type="module" defer src="/assets/js/index.js"></script></html>

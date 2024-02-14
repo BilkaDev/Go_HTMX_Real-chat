@@ -1,4 +1,6 @@
- const toastAlert= (message) => Toastify({
+import { Config } from "./config.js";
+
+const toastAlert= (message) => Toastify({
     text: message,
     duration: 3000,
     newWindow: false,
@@ -16,10 +18,12 @@
 
 // htmx.logger = function(elt, event, data) {
 //     if(console) {
-//             console.log("INFO:", event, elt, data);
+//         console.log(event, elt, data);
 //     }
 // }
-
+document.body.addEventListener('htmx:configRequest', function(evt) {
+    evt.detail.path = `${Config.apiUrl}${event.detail.path}`
+});
 
 htmx.on("htmx:responseError",( event)=> {
     toastAlert(event.detail.xhr.response)

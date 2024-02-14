@@ -19,7 +19,7 @@ type MessageHandler struct {
 	StoreConversation *store.ConversationStore
 }
 
-func MessageRouter(e *echo.Echo, prefix string, storage *store.SqlStore) {
+func MessageRouter(e *echo.Group, prefix string, storage *store.SqlStore) {
 	mh := &MessageHandler{
 		StoreMessage:      store.NewMessageStore(storage),
 		StoreUser:         store.NewUserStore(storage),

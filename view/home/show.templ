@@ -6,9 +6,16 @@ import sidebar "github.com/bilkadev/Go_HTMX_Real-chat/view/components/sidebar"
 import ui "github.com/bilkadev/Go_HTMX_Real-chat/view/components/ui"
 import messages "github.com/bilkadev/Go_HTMX_Real-chat/view/components/messages"
 
-templ Show(users []model.User, attrs templ.Attributes) {
+templ Show(users []model.User, withData bool) {
 	@ui.GlassCard("") {
-		<div { attrs... } class="flex sm:h-[450px] md:h-[550px] rounded-lg overflow-hidden">
+		<div
+			if !withData {
+				hx-get="/home"
+				hx-trigger="load"
+				hx-swap="outerHTML"
+			}
+			class="flex sm:h-[450px] md:h-[550px] rounded-lg overflow-hidden"
+		>
 			@sidebar.Sidebar(users)
 			@messages.MessageContainer()
 		</div>

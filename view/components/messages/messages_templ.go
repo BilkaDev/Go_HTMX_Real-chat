@@ -57,7 +57,7 @@ func Messages(currentUser *model.User, receiver *model.User, messages *[]model.M
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" hx-target=\"#chat-message\" hx-swap=\"beforeend scroll:bottom\" class=\"px-4 my-3\"><div class=\"w-full relative\"><input type=\"text\" name=\"message\" required minlength=\"1\" class=\"border text-sm rounded-lg block w-full p-2.5 bg-gray700 border-gray-600\"> <button type=\"submit\" class=\"absolute inset-y-0 right-0 flex items-center pe-3\"><img class=\"w-6\" src=\"/assets/image/icon/send.svg\" alt=\"send icon\"></button></div></form></div>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" hx-target=\"#chat-message\" hx-swap=\"beforeend scroll:bottom\" hx-on::after-request=\"this.reset()\" class=\"px-4 my-3\"><div class=\"w-full relative\"><input type=\"text\" name=\"message\" required minlength=\"1\" class=\"border text-sm rounded-lg block w-full p-2.5 bg-gray700 border-gray-600\"> <button type=\"submit\" class=\"absolute inset-y-0 right-0 flex items-center pe-3\"><img class=\"w-6\" src=\"/assets/image/icon/send.svg\" alt=\"send icon\"></button></div></form></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

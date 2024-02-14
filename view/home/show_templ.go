@@ -16,7 +16,7 @@ import sidebar "github.com/bilkadev/Go_HTMX_Real-chat/view/components/sidebar"
 import ui "github.com/bilkadev/Go_HTMX_Real-chat/view/components/ui"
 import messages "github.com/bilkadev/Go_HTMX_Real-chat/view/components/messages"
 
-func Show(users []model.User, attrs templ.Attributes) templ.Component {
+func Show(users []model.User, withData bool) templ.Component {
 	return templ.ComponentFunc(func(ctx context.Context, templ_7745c5c3_W io.Writer) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templ_7745c5c3_W.(*bytes.Buffer)
 		if !templ_7745c5c3_IsBuffer {
@@ -39,9 +39,11 @@ func Show(users []model.User, attrs templ.Attributes) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, attrs)
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
+			if !withData {
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" hx-get=\"/home\" hx-trigger=\"load\" hx-swap=\"outerHTML\"")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" class=\"flex sm:h-[450px] md:h-[550px] rounded-lg overflow-hidden\">")
 			if templ_7745c5c3_Err != nil {

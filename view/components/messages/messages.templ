@@ -13,7 +13,13 @@ templ Messages(currentUser *model.User, receiver *model.User, messages *[]model.
 		}
 	</div>
 	<div class="message-input">
-		<form hx-post={ "/message/send/" + strconv.FormatUint(uint64(receiver.ID), 10) } hx-target="#chat-message" hx-swap="beforeend scroll:bottom" class="px-4 my-3">
+		<form
+			hx-post={ "/message/send/" + strconv.FormatUint(uint64(receiver.ID), 10) }
+			hx-target="#chat-message"
+			hx-swap="beforeend scroll:bottom"
+			hx-on::after-request="this.reset()"
+			class="px-4 my-3"
+		>
 			<div class="w-full relative">
 				<input
 					type="text"

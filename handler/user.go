@@ -14,7 +14,7 @@ type UserHandler struct {
 	store *store.UserStore
 }
 
-func UserRouter(e *echo.Echo, prefix string, storage *store.SqlStore) {
+func UserRouter(e *echo.Group, prefix string, storage *store.SqlStore) {
 	uh := &UserHandler{
 		store: store.NewUserStore(storage),
 	}

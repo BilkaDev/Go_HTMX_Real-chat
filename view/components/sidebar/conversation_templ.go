@@ -36,7 +36,7 @@ func Conversation(u model.User) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" hx-target=\"#message-container\" class=\"flex gap-2 items-center hover:bg-sky-500 rounded p-2 py-1 cursor-pointer\"><div class=\"avatar online\"><div class=\"w-12 rounded-full\"><img src=\"")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" hx-swap=\"innerHTML scroll:#chat-message:bottom\" hx-target=\"#message-container\" class=\"flex gap-2 items-center hover:bg-sky-500 rounded p-2 py-1 cursor-pointer\"><div class=\"avatar online\"><div class=\"w-12 rounded-full\"><img src=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

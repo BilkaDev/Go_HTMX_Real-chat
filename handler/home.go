@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/a-h/templ"
 	"github.com/bilkadev/Go_HTMX_Real-chat/config"
 	"github.com/bilkadev/Go_HTMX_Real-chat/middleware"
 	"github.com/bilkadev/Go_HTMX_Real-chat/store"
@@ -16,7 +15,7 @@ type HomeHandler struct {
 	StoreUser *store.UserStore
 }
 
-func HomeRouter(e *echo.Echo, prefix string, storage *store.SqlStore) {
+func HomeRouter(e *echo.Group, prefix string, storage *store.SqlStore) {
 	h := &HomeHandler{
 		StoreUser: store.NewUserStore(storage),
 	}
@@ -34,5 +33,5 @@ func (h *HomeHandler) handleHomeShow(c echo.Context) error {
 		fmt.Println(err.Error())
 		c.String(http.StatusInternalServerError, "ERR_INTERNAL_SERVER Something went wrong!")
 	}
-	return render(c, home.Show(*u, templ.Attributes{}))
+	return render(c, home.Show(*u, true))
 }
