@@ -1,9 +1,11 @@
 package components
 
+import "github.com/bilkadev/Go_HTMX_Real-chat/view/utils"
+
 templ Greeting() {
 	<div class="flex items-center justify-center w-full h-full">
 		<div class="px-4 text-center sm:text-lg md:text-xl text-gray-200 font-semibold flex flex-col items-center gap-2">
-			<p>Welcome</p>
+			<p>Welcome { utils.GetUserName(ctx) }</p>
 			<p>Select a person do you want to talk to</p>
 			<img class="w-10" src="/assets/image/icon/comments.svg" alt="icon talking"/>
 		</div>

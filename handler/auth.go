@@ -3,6 +3,7 @@ package handler
 import (
 	"net/http"
 
+	"github.com/a-h/templ"
 	"github.com/bilkadev/Go_HTMX_Real-chat/model"
 	"github.com/bilkadev/Go_HTMX_Real-chat/pkg"
 	"github.com/bilkadev/Go_HTMX_Real-chat/pkg/security"
@@ -49,7 +50,7 @@ func (h AuthHandler) HandleAuthLogin(c echo.Context) error {
 	security.WriteTokenCoocies(c, t)
 
 	c.Response().Header().Set("HX-Push-Url", "/")
-	return render(c, home.Show([]model.User{}))
+	return render(c, home.Show([]model.User{}, templ.Attributes{}))
 }
 
 func (h AuthHandler) HandleAuthLogout(c echo.Context) error {
@@ -106,5 +107,5 @@ func (h AuthHandler) HandleAuthSignUp(c echo.Context) error {
 
 	security.WriteTokenCoocies(c, t)
 	c.Response().Header().Set("HX-Push-Url", "/")
-	return render(c, home.Show([]model.User{}))
+	return render(c, home.Show([]model.User{}, templ.Attributes{}))
 }

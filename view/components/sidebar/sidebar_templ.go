@@ -10,7 +10,10 @@ import "context"
 import "io"
 import "bytes"
 
-import "github.com/bilkadev/Go_HTMX_Real-chat/model"
+import (
+	"github.com/bilkadev/Go_HTMX_Real-chat/model"
+	"github.com/bilkadev/Go_HTMX_Real-chat/view/utils"
+)
 
 func Sidebar(users []model.User) templ.Component {
 	return templ.ComponentFunc(func(ctx context.Context, templ_7745c5c3_W io.Writer) (templ_7745c5c3_Err error) {
@@ -25,15 +28,21 @@ func Sidebar(users []model.User) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"border-r border-slate-500 p-4 flex flex-col\"><div class=\"search-input\"><form class=\"relative\"><input type=\"text\" placeholder=\"Search...\" class=\"input input-bordered rounded-full\"> <button type=\"submit\" class=\"btn btn-circle bg-sky-202 text-white absolute right-0\"><img style=\"width:1.8rem\" src=\"/assets/image/icon/search.svg\" alt=\"search icon\"></button></form></div><div class=\"divider px-3\"></div><div hx-get=\"/user\" hx-trigger=\"load\"><div class=\"flex justify-center\"><span class=\"loading loading-dots loading-lg\"></span></div>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"border-r border-slate-500 p-4 flex flex-col\"><div class=\"search-input\"><form class=\"relative\"><input type=\"text\" placeholder=\"Search...\" class=\"input input-bordered rounded-full\"> <button type=\"submit\" class=\"btn btn-circle bg-sky-202 text-white absolute right-0\"><img style=\"width:1.8rem\" src=\"/assets/image/icon/search.svg\" alt=\"search icon\"></button></form></div><div class=\"divider px-3\"></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
+		}
+		if utils.GetUserName(ctx) == "" {
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"flex justify-center\"><span class=\"loading loading-dots loading-lg\"></span></div>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
 		}
 		templ_7745c5c3_Err = Conversations(users).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><div class=\"logout-btn mt-auto w-6 h-6 pb-2\"><button hx-post=\"/auth/logout\" class=\"mt-2\"><img class=\"w-6 h-6 \" src=\"/assets/image/icon/logout.svg\" alt=\"logout btn\"></button></div></div>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"logout-btn mt-auto w-6 h-6 pb-2\"><button hx-post=\"/auth/logout\" class=\"mt-2\"><img class=\"w-6 h-6 \" src=\"/assets/image/icon/logout.svg\" alt=\"logout btn\"></button></div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

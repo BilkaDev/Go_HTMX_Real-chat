@@ -1,6 +1,9 @@
 package components 
 
-import "github.com/bilkadev/Go_HTMX_Real-chat/model"
+import (
+	"github.com/bilkadev/Go_HTMX_Real-chat/model"
+	"github.com/bilkadev/Go_HTMX_Real-chat/view/utils"
+)
 
 templ Sidebar(users []model.User) {
 	<div class="border-r border-slate-500 p-4 flex flex-col">
@@ -11,12 +14,12 @@ templ Sidebar(users []model.User) {
 			</form>
 		</div>
 		<div class="divider px-3"></div>
-		<div hx-get="/user" hx-trigger="load">
+		if utils.GetUserName(ctx) == "" {
 			<div class="flex justify-center">
 				<span class="loading loading-dots loading-lg"></span>
 			</div>
-			@Conversations(users)
-		</div>
+		}
+		@Conversations(users)
 		<div class="logout-btn mt-auto w-6 h-6 pb-2">
 			<button hx-post="/auth/logout" class="mt-2">
 				<img class="w-6 h-6 " src="/assets/image/icon/logout.svg" alt="logout btn"/>
