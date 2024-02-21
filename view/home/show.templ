@@ -13,6 +13,10 @@ templ Show(users []model.User, withData bool) {
 				hx-get="/home"
 				hx-trigger="load"
 				hx-swap="outerHTML"
+			} else {
+				hx-ext="ws"
+				ws-connect="/api/v1/ws/message"
+				hx-on::oob-after-swap="afterOobSwapScroll(event)"
 			}
 			class="flex sm:h-[450px] md:h-[550px] rounded-lg overflow-hidden"
 		>

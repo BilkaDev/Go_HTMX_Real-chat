@@ -8,6 +8,7 @@ templ Application() {
 			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 			<title>GoChat</title>
 			<script src="/assets/js/htmx.min.js" defer></script>
+			<script src="/assets/js/customHtmx.js" defer></script>
 			<link href="/assets/css/daisy.css" rel="stylesheet" type="text/css"/>
 			<link href="/assets/css/output.css" rel="stylesheet" type="text/css"/>
 			<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"/>
@@ -15,6 +16,7 @@ templ Application() {
 		<body id="htmx-body">
 			{ children... }
 		</body>
+		<script defer src="https://unpkg.com/htmx.org/dist/ext/ws.js"></script>
 		<script type="text/javascript" defer src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 		<script type="module" defer src="/assets/js/index.js"></script>
 	</html>

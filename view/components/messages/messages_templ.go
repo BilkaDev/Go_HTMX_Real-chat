@@ -26,25 +26,49 @@ func Messages(currentUser *model.User, receiver *model.User, messages *[]model.M
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"bg-slate-600 px-4 py-2 mb-2\"><span class=\"label-text\">To:</span> <span class=\"text-gray-200 font-bold\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div id=\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString("messages-receiver-username"))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" data-username=\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(receiver.UserName))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" class=\"bg-slate-600 px-4 py-2 mb-2\"><span class=\"label-text\">To:</span> <span class=\"text-gray-200 font-bold\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var2 string
-		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(receiver.FullName)
+		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(receiver.UserName)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `view\components\messages\messages.templ`, Line: 7, Col: 95}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `view\components\messages\messages.templ`, Line: 11, Col: 96}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</span></div><div id=\"chat-message\" class=\"messages px-4 flex-1 overflow-auto\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</span></div><div id=\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString("chat-message-" + strconv.FormatUint(uint64(receiver.ID), 10)))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" class=\"chat-messages px-4 flex-1 overflow-auto\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		for _, m := range *messages {
-			templ_7745c5c3_Err = Message(currentUser.ID == m.SenderID, *currentUser, *receiver, m).Render(ctx, templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = Message(currentUser.ID == m.SenderID, *currentUser, *receiver, m, false).Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -57,7 +81,15 @@ func Messages(currentUser *model.User, receiver *model.User, messages *[]model.M
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" hx-target=\"#chat-message\" hx-swap=\"beforeend scroll:bottom\" hx-on::after-request=\"this.reset()\" class=\"px-4 my-3\"><div class=\"w-full relative\"><input type=\"text\" name=\"message\" required minlength=\"1\" class=\"border text-sm rounded-lg block w-full p-2.5 bg-gray700 border-gray-600\"> <button type=\"submit\" class=\"absolute inset-y-0 right-0 flex items-center pe-3\"><img class=\"w-6\" src=\"/assets/image/icon/send.svg\" alt=\"send icon\"></button></div></form></div>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" hx-target=\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString("#chat-message-" + strconv.FormatUint(uint64(receiver.ID), 10)))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" hx-swap=\"beforeend scroll:bottom\" hx-on::after-request=\"this.reset()\" class=\"px-4 my-3\"><div class=\"w-full relative\"><input type=\"text\" name=\"message\" required minlength=\"1\" class=\"border text-sm rounded-lg block w-full p-2.5 bg-gray700 border-gray-600\"> <button type=\"submit\" class=\"absolute inset-y-0 right-0 flex items-center pe-3\"><img class=\"w-6\" src=\"/assets/image/icon/send.svg\" alt=\"send icon\"></button></div></form></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

@@ -2,9 +2,15 @@ package components
 
 import "github.com/bilkadev/Go_HTMX_Real-chat/model"
 
+templ UsersOnline(data string) {
+	<div hx-swap-oob="true" id="users-online" data-users-online={ data }></div>
+}
+
 templ Conversations(users []model.User) {
-	// <div hx-get="/user" hx-trigger="every 1s" hx-swap="outerHTML" class="conversations py-2 flex flex-col overflow-auto">
 	<div id="conversations" class="conversations py-2 flex flex-col overflow-auto">
+		<div id="users-online-swap">
+			<div id="users-online" data-users-online="o"></div>
+		</div>
 		for _, user := range users {
 			@Conversation(user)
 		}

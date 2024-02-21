@@ -4,18 +4,22 @@ import "github.com/bilkadev/Go_HTMX_Real-chat/model"
 import "strconv"
 
 templ Messages(currentUser *model.User, receiver *model.User, messages *[]model.Message) {
-	<div class="bg-slate-600 px-4 py-2 mb-2">
-		<span class="label-text">To:</span> <span class="text-gray-200 font-bold">{ receiver.FullName }</span>
+	<div
+		id={ "messages-receiver-username" }
+		data-username={ receiver.UserName }
+		class="bg-slate-600 px-4 py-2 mb-2"
+	>
+		<span class="label-text">To:</span> <span class="text-gray-200 font-bold">{  receiver.UserName }</span>
 	</div>
-	<div id="chat-message" class="messages px-4 flex-1 overflow-auto">
+	<div id={ "chat-message-" + strconv.FormatUint(uint64(receiver.ID), 10) } class="chat-messages px-4 flex-1 overflow-auto">
 		for _, m := range *messages {
-			@Message(currentUser.ID == m.SenderID, *currentUser, *receiver, m)
+			@Message(currentUser.ID == m.SenderID, *currentUser, *receiver, m, false)
 		}
 	</div>
 	<div class="message-input">
 		<form
 			hx-post={ "/message/send/" + strconv.FormatUint(uint64(receiver.ID), 10) }
-			hx-target="#chat-message"
+			hx-target={ "#chat-message-" + strconv.FormatUint(uint64(receiver.ID), 10) }
 			hx-swap="beforeend scroll:bottom"
 			hx-on::after-request="this.reset()"
 			class="px-4 my-3"

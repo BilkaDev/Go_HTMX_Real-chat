@@ -2,6 +2,8 @@ module github.com/bilkadev/Go_HTMX_Real-chat
 
 go 1.21.6
 
+require github.com/gorilla/websocket v1.5.1
+
 require (
 	github.com/a-h/lexical v0.0.53 // indirect
 	github.com/a-h/parse v0.0.0-20230402144745-e6c8bc86e846 // indirect
@@ -16,6 +18,7 @@ require (
 	github.com/go-playground/validator/v10 v10.17.0 // indirect
 	github.com/golang-jwt/jwt v3.2.2+incompatible // indirect
 	github.com/golang-jwt/jwt/v5 v5.2.0 // indirect
+	github.com/google/uuid v1.6.0 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.5 // indirect
 	github.com/joho/godotenv v1.5.1 // indirect

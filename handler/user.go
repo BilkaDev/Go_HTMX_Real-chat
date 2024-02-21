@@ -29,12 +29,12 @@ func (h UserHandler) HandleUsersShow(c echo.Context) error {
 	q := c.QueryParam("search")
 	fmt.Println("query:", q)
 	if !ok {
-		return c.String(http.StatusInternalServerError, "ERR_INTERNAL_SERVER can't parse to uint")
+		return echo.NewHTTPError(http.StatusInternalServerError, "Can't parse to uint")
 	}
 
 	users, err := h.store.FindAllWithoutSender(currentUserId, q)
 	if err != nil {
-		return c.String(http.StatusInternalServerError, "ERR_INTERNAL_SERVER "+err.Error())
+		return echo.NewHTTPError(http.StatusInternalServerError, err)
 	}
 
 	return render(c, components.Conversations(*users))

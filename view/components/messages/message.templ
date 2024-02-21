@@ -1,33 +1,47 @@
 package components
 
 import "github.com/bilkadev/Go_HTMX_Real-chat/model"
+import "strconv"
 
-templ Message(current bool,c model.User,r model.User, m model.Message) {
+templ Message(current bool,c model.User,r model.User, m model.Message, ws bool) {
 	<div
-		if current {
-			class="chat chat-end"
-		} else {
-			class="chat chat-start"
+		if ws {
+			hx-swap-oob={ "beforeend:#chat-message-" + strconv.FormatUint(uint64(c.ID), 10) }
 		}
 	>
-		<div class="chat-image avatar">
-			<div class="w-10 rounded-full">
-				if current {
-					<img alt="Tailwind CSS chat bubble component" src={ c.Avatar }/>
-				} else {
-					<img alt="Tailwind CSS chat bubble component" src={ r.Avatar }/>
-				}
-			</div>
-		</div>
-		<div class="chat-header">
-			<time class="text-xs text-gray-200 opacity-50">{ m.CreatedAt.UTC().Format("15:04") }</time>
-		</div>
 		<div
 			if current {
-				class="chat-bubble chat-bubble-info"
+				class="chat chat-end"
 			} else {
-				class="chat-bubble"
+				class="chat chat-start"
 			}
-		>{ m.Message }</div>
+		>
+			<div
+				if current {
+					class="chat-image avatar online"
+				} else {
+					class="chat-image avatar"
+				}
+				class="chat-image avatar online"
+			>
+				<div class="w-10 rounded-full">
+					if current {
+						<img alt="Tailwind CSS chat bubble component" src={ c.Avatar }/>
+					} else {
+						<img alt="Tailwind CSS chat bubble component" src={ r.Avatar }/>
+					}
+				</div>
+			</div>
+			<div class="chat-header">
+				<time class="text-xs text-gray-200 opacity-50">{ m.CreatedAt.UTC().Format("15:04") }</time>
+			</div>
+			<div
+				if current {
+					class="chat-bubble chat-bubble-info"
+				} else {
+					class="chat-bubble"
+				}
+			>{ m.Message }</div>
+		</div>
 	</div>
 }

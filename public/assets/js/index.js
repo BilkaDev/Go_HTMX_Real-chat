@@ -28,3 +28,34 @@ document.body.addEventListener('htmx:configRequest', function(evt) {
 htmx.on("htmx:responseError",( event)=> {
     toastAlert(event.detail.xhr.response)
 })
+
+// Set users online notification
+
+function updateUsersStatus() {
+const userOnlineElement = document.getElementById("users-online")
+const usersSidebar = [...document.querySelectorAll('.avatar.sidebar')]
+const receiver = [...document.querySelectorAll('.chat-start > .avatar')] 
+const usersOnline = userOnlineElement.dataset.usersOnline.split(',')
+const receiverUsername = document.getElementById("messages-receiver-username")?.dataset?.username
+usersSidebar.forEach(user => {
+    if (usersOnline.includes(user.id.substring(7))) {
+        user.classList.add("online")
+    } else {
+        user.classList.remove("online")
+    }
+})
+receiver.forEach(user => {
+    if (usersOnline.includes(receiverUsername)) {
+        console.log(usersOnline, user.id)
+        user.classList.add("online")
+    } else {
+        user.classList.remove("online")
+    }
+})
+}
+htmx.on("htmx:oobAfterSwap", event => {
+updateUsersStatus()
+})
+htmx.on("htmx:load", event => {
+updateUsersStatus()
+})

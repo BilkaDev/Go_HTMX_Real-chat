@@ -44,6 +44,11 @@ func Show(users []model.User, withData bool) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
+			} else {
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" hx-ext=\"ws\" ws-connect=\"/api/v1/ws/message\" hx-on::oob-after-swap=\"afterOobSwapScroll(event)\"")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" class=\"flex sm:h-[450px] md:h-[550px] rounded-lg overflow-hidden\">")
 			if templ_7745c5c3_Err != nil {

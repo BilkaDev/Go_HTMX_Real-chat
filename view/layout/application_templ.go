@@ -23,7 +23,7 @@ func Application() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<!doctype html><html lang=\"en\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><title>GoChat</title><script src=\"/assets/js/htmx.min.js\" defer></script><link href=\"/assets/css/daisy.css\" rel=\"stylesheet\" type=\"text/css\"><link href=\"/assets/css/output.css\" rel=\"stylesheet\" type=\"text/css\"><link rel=\"stylesheet\" type=\"text/css\" href=\"https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css\"></head><body id=\"htmx-body\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<!doctype html><html lang=\"en\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><title>GoChat</title><script src=\"/assets/js/htmx.min.js\" defer></script><script src=\"/assets/js/customHtmx.js\" defer></script><link href=\"/assets/css/daisy.css\" rel=\"stylesheet\" type=\"text/css\"><link href=\"/assets/css/output.css\" rel=\"stylesheet\" type=\"text/css\"><link rel=\"stylesheet\" type=\"text/css\" href=\"https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css\"></head><body id=\"htmx-body\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -31,7 +31,7 @@ func Application() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</body><script type=\"text/javascript\" defer src=\"https://cdn.jsdelivr.net/npm/toastify-js\"></script><script type=\"module\" defer src=\"/assets/js/index.js\"></script></html>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</body><script defer src=\"https://unpkg.com/htmx.org/dist/ext/ws.js\"></script><script type=\"text/javascript\" defer src=\"https://cdn.jsdelivr.net/npm/toastify-js\"></script><script type=\"module\" defer src=\"/assets/js/index.js\"></script></html>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

@@ -29,21 +29,21 @@ func (h AuthHandler) HandleAuthLogin(c echo.Context) error {
 	u := model.UserIn{}
 	err := pkg.FormValidate(c, &u)
 	if err != nil {
-		return c.String(http.StatusBadRequest, "ERR_BAD_REQUEST "+err.Error())
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
 
 	us, err := h.store.FindOneByUserName(u.UserName)
 	if err != nil {
-		return c.String(http.StatusUnauthorized, "ERR_UNAUTHORIZED Invalid userName or password")
+		return echo.NewHTTPError(http.StatusUnauthorized, "Invalid UserName or Password")
 	}
 
 	valid := security.CheckPasswordHash(u.Password, us.Password)
 	if !valid {
-		return c.String(http.StatusUnauthorized, "ERR_UNAUTHORIZED Invalid userName or password")
+		return echo.NewHTTPError(http.StatusUnauthorized, "Invalid UserName or Password")
 	}
 	t, err := security.CreateAccesToken(u.UserName, us.ID)
 	if err != nil {
-		return c.String(http.StatusInternalServerError, "ERR_INTERNAL_SERVER, can't create access token")
+		return echo.NewHTTPError(http.StatusInternalServerError, "Can't create access token")
 	}
 
 	security.WriteTokenCoocies(c, t)
@@ -63,25 +63,25 @@ func (h AuthHandler) HandleAuthSignUp(c echo.Context) error {
 	u := model.User{}
 	err := pkg.FormValidate(c, &u)
 	if err != nil {
-		return c.String(http.StatusBadRequest, "ERR_BAD_REQUEST "+err.Error())
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
 	if u.Password != c.FormValue("repassword") {
 
-		return c.String(http.StatusBadRequest, "ERR_BAD_REQUEST password dosen't match")
+		return echo.NewHTTPError(http.StatusBadRequest, "Password dosen't match")
 	}
 
 	_, ok := h.store.FindOneByEmail(u.Email)
 	if ok == nil {
-		return c.String(http.StatusConflict, "ERR_CONFLICT user with given email already exists")
+		return echo.NewHTTPError(http.StatusConflict, "User with given email already exists")
 	}
 	_, ok = h.store.FindOneByUserName(u.UserName)
 	if ok == nil {
-		return c.String(http.StatusConflict, "ERR_CONFLICT user with given userName already exists")
+		return echo.NewHTTPError(http.StatusConflict, "User with given userName already exists")
 	}
 
 	hashPwd, err := security.HashPassword(u.Password)
 	if err != nil {
-		return c.String(http.StatusInternalServerError, "ERR_INTERNAL_SERVER, can't hash password")
+		return echo.NewHTTPError(http.StatusInternalServerError, "Can't hash password")
 	}
 	// generate hash password
 	u.Password = hashPwd
@@ -96,12 +96,12 @@ func (h AuthHandler) HandleAuthSignUp(c echo.Context) error {
 
 	_, err = h.store.Create(&u)
 	if err != nil {
-		return c.String(http.StatusBadRequest, "ERR_BAD_REQUEST"+err.Error())
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
 	//  generate JWT
 	t, err := security.CreateAccesToken(u.UserName, u.ID)
 	if err != nil {
-		return c.String(http.StatusInternalServerError, "ERR_INTERNAL_SERVER, can't create access token")
+		return echo.NewHTTPError(http.StatusInternalServerError, "Can't create access token")
 	}
 
 	security.WriteTokenCoocies(c, t)
